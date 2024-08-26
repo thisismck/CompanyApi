@@ -1,0 +1,67 @@
+﻿@model IEnumerable<CompanyClient.Models.Company>
+
+@{
+    ViewData["Title"] = "Companies List";
+    var searchType = Context.Request.Query["searchType"].ToString(); // Get current search type from query string
+    var searchValue = Context.Request.Query["searchValue"].ToString(); // Get current search value from query string
+}
+
+<h1>Companies</h1>
+
+<!-- Search Form -->
+<form method="get" asp-action="Index">
+    <div class="form-group">
+        <label for="searchType">Search by:</label>
+        <select id="searchType" name="searchType" class="form-control" >
+            <option value="Id" selected="@(searchType == "Id")">ID</option>
+            <option value="Isin" selected="@(searchType == "Isin")">ISIN</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="searchValue">Enter Value:</label>
+        <input type="text" id="searchValue" name="searchValue" class="form-control" value="@searchValue" />
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Clear Search</a>
+</form>
+
+<p>
+    <a href="@Url.Action("Create")">Create New</a>
+</p>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Exchange</th>
+                <th>Ticker</th>
+                <th>ISIN</th>
+                <th>Website</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Exchange</td>
+                    <td>@item.Ticker</td>
+                    <td>@item.Isin</td>
+                    <td>@item.Website</td>
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No companies found.</p>
+}
