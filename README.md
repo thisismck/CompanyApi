@@ -20,6 +20,48 @@ The **Company API** is a .NET Core-based web service that allows for the managem
 - **Testing**: xUnit, Moq
 - **Authentication**: Bearer Token Authentication
 
+## Database Setup
+
+To set up the database for this project, follow these steps:
+
+### 1. Install Entity Framework Core Tools
+
+Ensure you have the Entity Framework Core tools installed. This will allow you to create and apply migrations. Run the following command to install the tools globally if you haven't already:
+
+```sh
+dotnet tool install --global dotnet-ef
+```
+
+### 2. Apply Existing Migrations
+
+Since the `20240826184330_InitialCreate` migration already exists, you need to apply this migration to your database to create the initial schema.
+
+Run the following command to apply the migration:
+
+```sh
+dotnet ef database update
+```
+
+This command will apply all pending migrations, including `20240826184330_InitialCreate`, to the database and create the database if it doesn’t already exist.
+
+### 3. Verify the Database Schema
+
+After applying the migration, verify that the database schema is created as expected. You can check the database using a database management tool such as SQL Server Management Studio (SSMS) or any other SQL client tool.
+
+### 4. Configure Database Connection
+
+Ensure that your connection string is correctly configured in `appsettings.json` or your environment variables. Here is an example configuration in `appsettings.json`:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=CompanyDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+  }
+}
+```
+
+Replace `Server`, `Database`, and other connection details according to your database setup.
+
 ## Database Design
 
 ### Company Table Schema
@@ -75,9 +117,9 @@ The API uses Bearer Token authentication. Include the token in the `Authorizatio
 
 ### Prerequisites
 
-- [.NET 6 SDK or later](https://dotnet.microsoft.com/download)
-- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) or [SQL Server Express](https://www.microsoft.com/en-us/sql-server/sql-server-editions)
-
+- [.NET 8 SDK or later](https://dotnet.microsoft.com/download)
+- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+  
 ### Cloning and Building the Project
 
 1. **Clone the Repository**
@@ -117,13 +159,6 @@ Navigate to the `CompanyApi.Tests` directory and run:
 dotnet test
 ```
 
-### Client Tests
-
-Navigate to the `CompanyClient.Tests` directory and run:
-
-```sh
-dotnet test
-```
 ## Deployment
 
 ### Deployment Steps
